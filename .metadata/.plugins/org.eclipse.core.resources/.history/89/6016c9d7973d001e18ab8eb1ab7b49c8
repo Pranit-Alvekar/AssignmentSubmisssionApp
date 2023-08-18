@@ -1,0 +1,5 @@
+package com.codereview.AssignmentSubmissionApp.repository;
+
+public interface UserRepository {
+
+}

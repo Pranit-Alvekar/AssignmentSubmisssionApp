@@ -1,0 +1,5 @@
+package com.codereview.AssignmentSubmissionApp.dto;
+
+public class AuthCredentialsRequest {
+
+}

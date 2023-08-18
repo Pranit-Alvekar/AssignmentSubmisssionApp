@@ -1,0 +1,5 @@
+package com.codereview.AssignmentSubmissionApp.web;
+
+public class AuthController {
+
+}

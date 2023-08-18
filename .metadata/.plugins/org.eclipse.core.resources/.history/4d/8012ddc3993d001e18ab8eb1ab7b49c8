@@ -1,0 +1,5 @@
+package com.codereview.AssignmentSubmissionApp.util;
+
+public class JwtUtil {
+
+}

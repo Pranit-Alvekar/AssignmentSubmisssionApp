@@ -1,0 +1,20 @@
+package com.codereview.AssignmentSubmissionApp.web;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.codereview.AssignmentSubmissionApp.dto.AuthCredentialsRequest;
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+	
+	@PostMapping("login")
+	public ResponseEntity<?> login(AuthCredentialsRequest req){
+		
+		return ResponseEntity.ok(null);
+	}
+
+}
