@@ -1,13 +1,13 @@
-package com.codereviewer.AssignmentSubmisssionApp;
+package com.codereview.AssignmentSubmissionApp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AssignmentSubmisssionAppApplication {
+public class AssignmentSubmissionAppApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AssignmentSubmisssionAppApplication.class, args);
+		SpringApplication.run(AssignmentSubmissionAppApplication.class, args);
 	}
 
 }

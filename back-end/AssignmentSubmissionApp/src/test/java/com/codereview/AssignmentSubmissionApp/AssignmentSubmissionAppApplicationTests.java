@@ -1,10 +1,10 @@
-package com.codereviewer.AssignmentSubmisssionApp;
+package com.codereview.AssignmentSubmissionApp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AssignmentSubmisssionAppApplicationTests {
+class AssignmentSubmissionAppApplicationTests {
 
 	@Test
 	void contextLoads() {
