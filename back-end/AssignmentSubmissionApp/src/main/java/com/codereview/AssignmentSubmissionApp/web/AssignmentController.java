@@ -32,6 +32,12 @@ public class AssignmentController {
 		return ResponseEntity.ok(newAssignment);
 	}
 	
+	  @GetMapping("")
+	    public ResponseEntity<?> getAssignments(@AuthenticationPrincipal User user) {
+	        Set<Assignment> assignmentsByUser = assignmentService.findByUser(user);
+	        return ResponseEntity.ok(assignmentsByUser);
+	    }
+	
 	@GetMapping("{assignmentId}")
 	public ResponseEntity<?> getAssignments(@PathVariable Long assignmentId ,@AuthenticationPrincipal User user){
 		
