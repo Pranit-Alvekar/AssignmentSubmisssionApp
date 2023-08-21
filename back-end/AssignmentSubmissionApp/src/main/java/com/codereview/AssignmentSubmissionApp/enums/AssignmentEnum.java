@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum AssignmentEnum {
-	 ASSIGNMENT_1(1, "HTML Assignment"),
+	    ASSIGNMENT_1(1, "HTML Assignment"),
 	    ASSIGNMENT_2(2, "Guessing Game"),
 	    ASSIGNMENT_3(3, "User Login"),
 	    ASSIGNMENT_4(4, "Student Course List"),
@@ -17,8 +17,8 @@ public enum AssignmentEnum {
 	    ASSIGNMENT_11(11, "Full-Stack with Thymeleaf"),
 	    ASSIGNMENT_12(12, "Reports with SQL"),
 	    ASSIGNMENT_13(13, "Online Bank"),
-	    ASSIGNMENT_14(14, "Chatting with JS"),
-	    FINAL_PROJECT(15, "Final Project");
+	    ASSIGNMENT_14(14, "Chatting with JS");
+	  
 
 	    private int assignmentNum;
 	    private String assignmentName;

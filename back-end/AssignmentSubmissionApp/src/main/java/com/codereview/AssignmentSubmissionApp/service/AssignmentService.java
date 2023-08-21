@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.codereview.AssignmentSubmissionApp.domain.Assignment;
 import com.codereview.AssignmentSubmissionApp.domain.User;
+import com.codereview.AssignmentSubmissionApp.enums.AssignmentStatusEnum;
 import com.codereview.AssignmentSubmissionApp.repository.AssignmentRepository;
 
 @Service
@@ -18,7 +19,7 @@ public class AssignmentService {
 	
 	public Assignment save(User user) {
 		Assignment assignment = new Assignment();
-		assignment.setStatus("Needs to be Submitted");
+		assignment.setStatus(AssignmentStatusEnum.PENDING_SUBMISSION.getStatus());
 		assignment.setUser(user);
 		
 		return assignmentRepo.save(assignment);

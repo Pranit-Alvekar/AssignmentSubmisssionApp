@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useLocalState } from "../util/useLocalStorage";
-import { Link } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import ajax from "../Services/fetchService";
 import { Button, Card } from "react-bootstrap";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [jwt, setJwt] = useLocalState("", "jwt");
   const [assignments, setAssignments] = useState(null);
 
@@ -16,7 +17,8 @@ const Dashboard = () => {
 
   function createAssignment() {
     ajax("api/assignments", "POST", jwt).then((assignment) => {
-      window.location.href = `/assignments/${assignment.id}`;
+      navigate(`/assignments/${assignment.id}`);
+      // window.location.href = `/assignments/${assignment.id}`;
     });
   }
   return (

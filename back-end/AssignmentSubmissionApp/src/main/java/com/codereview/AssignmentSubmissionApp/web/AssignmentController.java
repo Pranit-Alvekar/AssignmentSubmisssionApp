@@ -44,8 +44,8 @@ public class AssignmentController {
 		
 		Optional<Assignment> assignmentOpt = assignmentService.findById(assignmentId);
 		
-		
-		return ResponseEntity.ok(new AssignmentResponseDto(assignmentOpt.orElse(new Assignment())));
+		AssignmentResponseDto response = new AssignmentResponseDto(assignmentOpt.orElse(new Assignment()));
+		return ResponseEntity.ok(response);
 		
 	}
 	
