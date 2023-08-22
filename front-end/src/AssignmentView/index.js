@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useLocalState } from "../util/useLocalStorage";
 import ajax from "../Services/fetchService";
@@ -20,47 +20,55 @@ const AssignmentView = () => {
     branch: "",
     githuburl: "",
     number: null,
-    status: null
+    status: null,
   });
   const [jwt, setJwt] = useLocalState("", "jwt");
   const [assignmentEnums, setAssignmentEnums] = useState([]);
   const [assignmentStatuses, setAssignmentStatuses] = useState([]);
 
+  const prevAssignmentValue = useRef(assignment);
 
-  async function updateAssignment(prop, value) {
+  function updateAssignment(prop, value) {
     const newAssignment = { ...assignment };
     newAssignment[prop] = value;
-    await setAssignment(newAssignment);
+    setAssignment(newAssignment);
     //  console.log(assignment)
   }
 
-  // function save() {
-  //   console.log(`status ${assignment.status}`);
-  //   if(assignment.status === assignmentStatuses[0].status){
-  //     updateAssignment("status",assignmentStatuses[1].status)
-  //     console.log(`status ${assignment.status}`);
-  //   }
-  //   ajax(`/api/assignments/${id}`, "PUT", jwt, assignment).then(
-  //     (assignmentData) => {
-  //       setAssignment(assignmentData);
-  //     }
-  //   );
-  // }
   function save() {
-    const updatedStatus = assignmentStatuses[1].status;
-    const updatedAssignment = assignment.status === assignmentStatuses[0].status
-      ? { ...assignment, status: updatedStatus }
-      : assignment;
-  
-    ajax(`/api/assignments/${id}`, "PUT", jwt, updatedAssignment).then(
+    if (assignment.status === assignmentStatuses[0].status) {
+      updateAssignment("status", assignmentStatuses[1].status);
+    } else {
+      persist();
+    }
+  }
+
+  function persist() {
+    ajax(`/api/assignments/${id}`, "PUT", jwt, assignment).then(
       (assignmentData) => {
         setAssignment(assignmentData);
       }
     );
   }
-  
-  
 
+  useEffect(() => {
+    if (prevAssignmentValue.current.status !== assignment.status) {
+      persist();
+    }
+    prevAssignmentValue.current = assignment;
+  }, [assignment]);
+  // function save() {
+  //   const updatedStatus = assignmentStatuses[1].status;
+  //   const updatedAssignment = assignment.status === assignmentStatuses[0].status
+  //     ? { ...assignment, status: updatedStatus }
+  //     : assignment;
+
+  //   ajax(`/api/assignments/${id}`, "PUT", jwt, updatedAssignment).then(
+  //     (assignmentData) => {
+  //       setAssignment(assignmentData);
+  //     }
+  //   );
+  // }
 
   useEffect(() => {
     ajax(`/api/assignments/${id}`, "GET", jwt).then((assignmentsResponse) => {
@@ -70,11 +78,10 @@ const AssignmentView = () => {
       setAssignment(assignmentData);
       setAssignmentEnums(assignmentsResponse.assignmentEnum);
       setAssignmentStatuses(assignmentsResponse.statusEnums);
-      console.log(assignmentsResponse.statusEnums);
     });
   }, []);
 
- // useEffect(() => console.log(assignmentEnums), [assignmentEnums]);
+  // useEffect(() => console.log(assignmentEnums), [assignmentEnums]);
 
   return (
     <Container className="mt-5">
@@ -109,7 +116,10 @@ const AssignmentView = () => {
                 }}
               >
                 {assignmentEnums.map((assignmentEnum) => (
-                  <Dropdown.Item eventKey={assignmentEnum.assignmentNum}>
+                  <Dropdown.Item
+                    key={assignmentEnum.assignmentNum}
+                    eventKey={assignmentEnum.assignmentNum}
+                  >
                     {assignmentEnum.assignmentNum}
                   </Dropdown.Item>
                 ))}
@@ -144,8 +154,13 @@ const AssignmentView = () => {
               />
             </Col>
           </Form.Group>
-
+          <div className="d-flex gap-5">
           <Button onClick={() => save()}>Submit Assignment</Button>
+          <Button 
+          variant="secondary"
+          onClick={() => window.location.href ="/dashboard"}>Back</Button>
+          </div>
+          
         </>
       ) : (
         <></>

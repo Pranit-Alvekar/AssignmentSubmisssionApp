@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocalState } from "../util/useLocalStorage";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ajax from "../Services/fetchService";
-import { Button, Card } from "react-bootstrap";
+import { Badge, Button, Card } from "react-bootstrap";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -24,8 +24,9 @@ const Dashboard = () => {
   return (
     <div style={{ margin: "2em" }}>
       <div className="mb-4">
-
-       <Button size="lg" onClick={() => createAssignment()}>Submit New Assignment</Button>
+        <Button size="lg" onClick={() => createAssignment()}>
+          Submit New Assignment
+        </Button>
       </div>
       {assignments ? (
         <div
@@ -38,11 +39,14 @@ const Dashboard = () => {
               style={{ width: "18rem", height: "18rem" }}
             >
               <Card.Body className="d-flex flex-column justify-content-around">
-                <Card.Title>Assignment #{assignment.id}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">
+                <Card.Title>Assignment #{assignment.number}</Card.Title>
+                <div className="d-flex alignitems-start">
+                <Badge pill bg="info" style={{ fontSize: "1em"}}>
                   {assignment.status}
-                </Card.Subtitle>
-                <Card.Text style={{ marginTop: "1em" }}>
+                </Badge>
+                </div>
+                
+                <Card.Text style={{ marginTop: "1em"  }}>
                   <b>Github URL:</b> {assignment.githuburl}
                   <br />
                   <b>Branch:</b> {assignment.branch}
@@ -63,8 +67,6 @@ const Dashboard = () => {
       ) : (
         <></>
       )}
-
-     
     </div>
   );
 };
