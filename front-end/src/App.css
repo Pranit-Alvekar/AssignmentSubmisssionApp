@@ -1,6 +1,12 @@
 .App {
   text-align: center;
 }
+.assignment-wrapper {
+  border: 1px dashed lightgray;
+  padding: 2em;
+  border-radius: 1em;
+  margin-top: 2em;
+}
 
 .App-logo {
   height: 40vmin;

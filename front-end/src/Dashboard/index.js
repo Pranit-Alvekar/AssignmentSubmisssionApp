@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocalState } from "../util/useLocalStorage";
 import { useNavigate } from "react-router-dom";
 import ajax from "../Services/fetchService";
-import { Badge, Button, Card } from "react-bootstrap";
+import { Badge, Button, Card, Col, Row } from "react-bootstrap";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -23,6 +23,20 @@ const Dashboard = () => {
   }
   return (
     <div style={{ margin: "2em" }}>
+      <Row>
+        <Col>
+          <div
+            className="d-flex justify-content-end"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              setJwt(null);
+              window.location.href = "/login";
+            }}
+          >
+            Logout
+          </div>
+        </Col>
+      </Row>
       <div className="mb-4">
         <Button size="lg" onClick={() => createAssignment()}>
           Submit New Assignment
@@ -41,12 +55,12 @@ const Dashboard = () => {
               <Card.Body className="d-flex flex-column justify-content-around">
                 <Card.Title>Assignment #{assignment.number}</Card.Title>
                 <div className="d-flex alignitems-start">
-                <Badge pill bg="info" style={{ fontSize: "1em"}}>
-                  {assignment.status}
-                </Badge>
+                  <Badge pill bg="info" style={{ fontSize: "1em" }}>
+                    {assignment.status}
+                  </Badge>
                 </div>
-                
-                <Card.Text style={{ marginTop: "1em"  }}>
+
+                <Card.Text style={{ marginTop: "1em" }}>
                   <b>Github URL:</b> {assignment.githuburl}
                   <br />
                   <b>Branch:</b> {assignment.branch}

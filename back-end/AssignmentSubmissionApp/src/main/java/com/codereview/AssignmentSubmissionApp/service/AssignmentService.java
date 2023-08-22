@@ -4,11 +4,13 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import com.codereview.AssignmentSubmissionApp.domain.Assignment;
 import com.codereview.AssignmentSubmissionApp.domain.User;
 import com.codereview.AssignmentSubmissionApp.enums.AssignmentStatusEnum;
+import com.codereview.AssignmentSubmissionApp.enums.AuthorityEnum;
 import com.codereview.AssignmentSubmissionApp.repository.AssignmentRepository;
 
 @Service
@@ -49,7 +51,22 @@ public class AssignmentService {
 	}
 
 	public Set<Assignment> findByUser(User user) {
-		return assignmentRepo.findByUser(user);
+		// loads assignment for reviewer
+		boolean hasCodeReviewerRole = user.getAuthorities()
+		.stream()
+		.filter
+		(auth -> AuthorityEnum.ROLE_CODE_REVIEWER.name().equals(auth.getAuthority()))
+		.count() > 0;
+		
+		if(hasCodeReviewerRole) {
+			return assignmentRepo.findByCodeReviewer(user);
+		}else {
+			// loads assignment for user
+			return assignmentRepo.findByUser(user);
+		}
+		
+
+		
 	}
 
 	public Optional<Assignment> findById(Long assignmentId) {
