@@ -13,9 +13,7 @@ const CodeReviewerDashboard = () => {
   function claimAssignment(assignment) {
     const decodedJWT = jwt_decode(jwt);
     const user = {
-     
       username: decodedJWT.sub,
-      
     };
 
     assignment.codeReviewer = user;
@@ -25,7 +23,7 @@ const CodeReviewerDashboard = () => {
     ajax(`/api/assignments/${assignment.id}`, "PUT", jwt, assignment).then(
       (updatedAssignment) => {
         const assignmentsCopy = [...assignments];
-        const i = assignmentsCopy.findIndex((a)=> a.id === assignment.id);
+        const i = assignmentsCopy.findIndex((a) => a.id === assignment.id);
         assignmentsCopy[i] = updatedAssignment;
         setAssignments(assignmentsCopy);
       }
@@ -65,58 +63,144 @@ const CodeReviewerDashboard = () => {
           <h1>Code Reviewer Dashboard</h1>
         </Col>
       </Row>
-
-      <div className="assignment-wrapper submitted">
-        <div
-          className="h3 px-2"
-          style={{
-            width: "min-content",
-            marginTop: "-2em",
-            marginBottom: "1em",
-            backgroundColor: "white",
-            whiteSpace: "nowrap",
-          }}
-        >
-          Awaiting Review
-        </div>
-        {assignments ? (
+      <div className="assignment-wrapper  in-review">
+        <div className="h3 px-2 assignment-wrapper-title">In Review</div>
+        {assignments &&
+        assignments.filter((assignment) => assignment.status === "In Review")
+          .length > 0 ? (
           <div
             className="d-grid gap-5"
             style={{ gridTemplateColumns: "repeat(auto-fill,18rem)" }}
           >
-            {assignments.map((assignment) => (
-              <Card
-                key={assignment.id}
-                style={{ width: "18rem", height: "18rem" }}
-              >
-                <Card.Body className="d-flex flex-column justify-content-around">
-                  <Card.Title>Assignment #{assignment.number}</Card.Title>
-                  <div className="d-flex alignitems-start">
-                    <Badge pill bg="info" style={{ fontSize: "1em" }}>
-                      {assignment.status}
-                    </Badge>
-                  </div>
+            {assignments
+              .filter((assignment) => assignment.status === "In Review")
+              .map((assignment) => (
+                <Card
+                  key={assignment.id}
+                  style={{ width: "18rem", height: "18rem" }}
+                >
+                  <Card.Body className="d-flex flex-column justify-content-around">
+                    <Card.Title>Assignment #{assignment.number}</Card.Title>
+                    <div className="d-flex alignitems-start">
+                      <Badge pill bg="info" style={{ fontSize: "1em" }}>
+                        {assignment.status}
+                      </Badge>
+                    </div>
 
-                  <Card.Text style={{ marginTop: "1em" }}>
-                    <b>Github URL:</b> {assignment.githuburl}
-                    <br />
-                    <b>Branch:</b> {assignment.branch}
-                  </Card.Text>
+                    <Card.Text style={{ marginTop: "1em" }}>
+                      <b>Github URL:</b> {assignment.githuburl}
+                      <br />
+                      <b>Branch:</b> {assignment.branch}
+                    </Card.Text>
 
-                  <Button
-                    variant="secondary"
-                    onClick={() => {
-                      claimAssignment(assignment);
-                    }}
-                  >
-                    Claim
-                  </Button>
-                </Card.Body>
-              </Card>
-            ))}
+                    <Button
+                      variant="secondary"
+                      onClick={() => {
+                        claimAssignment(assignment);
+                      }}
+                    >
+                      Claim
+                    </Button>
+                  </Card.Body>
+                </Card>
+              ))}
           </div>
         ) : (
           <></>
+        )}
+      </div>
+
+      <div className="assignment-wrapper  submitted">
+        <div className="h3 px-2 assignment-wrapper-title">Awaiting Review</div>
+        {assignments &&
+        assignments.filter((assignment) => assignment.status === "Submitted")
+          .length > 0 ? (
+          <div
+            className="d-grid gap-5"
+            style={{ gridTemplateColumns: "repeat(auto-fill,18rem)" }}
+          >
+            {assignments
+              .filter((assignment) => assignment.status === "Submitted")
+              .map((assignment) => (
+                <Card
+                  key={assignment.id}
+                  style={{ width: "18rem", height: "18rem" }}
+                >
+                  <Card.Body className="d-flex flex-column justify-content-around">
+                    <Card.Title>Assignment #{assignment.number}</Card.Title>
+                    <div className="d-flex alignitems-start">
+                      <Badge pill bg="info" style={{ fontSize: "1em" }}>
+                        {assignment.status}
+                      </Badge>
+                    </div>
+
+                    <Card.Text style={{ marginTop: "1em" }}>
+                      <b>Github URL:</b> {assignment.githuburl}
+                      <br />
+                      <b>Branch:</b> {assignment.branch}
+                    </Card.Text>
+
+                    <Button
+                      variant="secondary"
+                      onClick={() => {
+                        claimAssignment(assignment);
+                      }}
+                    >
+                      Claim
+                    </Button>
+                  </Card.Body>
+                </Card>
+              ))}
+          </div>
+        ) : (
+          <div>No assignments found</div>
+        )}
+      </div>
+
+      <div className="assignment-wrapper  needs-update">
+        <div className="h3 px-2 assignment-wrapper-title">Needs Update</div>
+        {assignments &&
+        assignments.filter((assignment) => assignment.status === "Needs Update")
+          .length > 0 ? (
+          <div
+            className="d-grid gap-5"
+            style={{ gridTemplateColumns: "repeat(auto-fill,18rem)" }}
+          >
+            {assignments
+              .filter((assignment) => assignment.status === "Needs Update")
+              .map((assignment) => (
+                <Card
+                  key={assignment.id}
+                  style={{ width: "18rem", height: "18rem" }}
+                >
+                  <Card.Body className="d-flex flex-column justify-content-around">
+                    <Card.Title>Assignment #{assignment.number}</Card.Title>
+                    <div className="d-flex alignitems-start">
+                      <Badge pill bg="info" style={{ fontSize: "1em" }}>
+                        {assignment.status}
+                      </Badge>
+                    </div>
+
+                    <Card.Text style={{ marginTop: "1em" }}>
+                      <b>Github URL:</b> {assignment.githuburl}
+                      <br />
+                      <b>Branch:</b> {assignment.branch}
+                    </Card.Text>
+
+                    <Button
+                      variant="secondary"
+                      onClick={() => {
+                        claimAssignment(assignment);
+                      }}
+                    >
+                      Claim
+                    </Button>
+                  </Card.Body>
+                </Card>
+              ))}
+          </div>
+        ) : (
+          <div>No assignments found</div>
         )}
       </div>
     </Container>
