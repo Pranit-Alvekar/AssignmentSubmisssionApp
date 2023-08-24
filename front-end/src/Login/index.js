@@ -3,7 +3,7 @@ import { useLocalState } from "../util/useLocalStorage";
 import ajax from "../Services/fetchService";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { Form } from "react-bootstrap";
-import { Navigate, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 
 
 const Login = () => {
@@ -34,7 +34,7 @@ const Login = () => {
 
       .then(([body, headers]) => {
         setJwt(headers.get("authorization"));
-        window.location.href = "dashboard"; // Getting the "authorization" header value
+        window.location.href = `/dashboard`;// Getting the "authorization" header value
       })
       .catch((message) => {
         alert(message);

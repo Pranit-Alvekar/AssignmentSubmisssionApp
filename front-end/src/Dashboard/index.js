@@ -3,6 +3,7 @@ import { useLocalState } from "../util/useLocalStorage";
 import { useNavigate } from "react-router-dom";
 import ajax from "../Services/fetchService";
 import { Badge, Button, Card, Col, Row } from "react-bootstrap";
+import StatusBadge from "../StatusBadge";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -17,8 +18,8 @@ const Dashboard = () => {
 
   function createAssignment() {
     ajax("api/assignments", "POST", jwt).then((assignment) => {
-      navigate(`/assignments/${assignment.id}`);
-      // window.location.href = `/assignments/${assignment.id}`;
+      //navigate(`/assignments/${assignment.id}`);
+       window.location.href = `/assignments/${assignment.id}`;
     });
   }
   return (
@@ -30,7 +31,7 @@ const Dashboard = () => {
             style={{ cursor: "pointer" }}
             onClick={() => {
               setJwt(null);
-              window.location.href = "/login";
+              navigate("/login");
             }}
           >
             Logout
@@ -55,9 +56,7 @@ const Dashboard = () => {
               <Card.Body className="d-flex flex-column justify-content-around">
                 <Card.Title>Assignment #{assignment.number}</Card.Title>
                 <div className="d-flex alignitems-start">
-                  <Badge pill bg="info" style={{ fontSize: "1em" }}>
-                    {assignment.status}
-                  </Badge>
+                  <StatusBadge text={assignment.status}/>
                 </div>
 
                 <Card.Text style={{ marginTop: "1em" }}>
@@ -69,7 +68,7 @@ const Dashboard = () => {
                 <Button
                   variant="secondary"
                   onClick={() => {
-                    window.location.href = `/assignments/${assignment.id}`;
+                    window.location.href=`/assignments/${assignment.id}`;
                   }}
                 >
                   Edit

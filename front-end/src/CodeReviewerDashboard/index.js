@@ -4,11 +4,16 @@ import { useNavigate } from "react-router-dom";
 import ajax from "../Services/fetchService";
 import { Badge, Button, Card, Col, Container, Row } from "react-bootstrap";
 import jwt_decode from "jwt-decode";
+import StatusBadge from "../StatusBadge";
 
 const CodeReviewerDashboard = () => {
   const navigate = useNavigate();
   const [jwt, setJwt] = useLocalState("", "jwt");
   const [assignments, setAssignments] = useState(null);
+
+  function editReview(assignment){
+    window.location.href=`/assignments/${assignment.id}`
+  }
 
   function claimAssignment(assignment) {
     const decodedJWT = jwt_decode(jwt);
@@ -38,8 +43,8 @@ const CodeReviewerDashboard = () => {
 
   function createAssignment() {
     ajax("api/assignments", "POST", jwt).then((assignment) => {
-      navigate(`/assignments/${assignment.id}`);
-      // window.location.href = `/assignments/${assignment.id}`;
+     // navigate(`/assignments/${assignment.id}`);
+       window.location.href = `/assignments/${assignment.id}`;
     });
   }
   return (
@@ -51,7 +56,7 @@ const CodeReviewerDashboard = () => {
             style={{ cursor: "pointer" }}
             onClick={() => {
               setJwt(null);
-              window.location.href = "/login";
+              navigate("/login");
             }}
           >
             Logout
@@ -73,7 +78,7 @@ const CodeReviewerDashboard = () => {
             style={{ gridTemplateColumns: "repeat(auto-fill,18rem)" }}
           >
             {assignments
-              .filter((assignment) => assignment.status === "In Review")
+              .filter((assignment) => assignment.status === "In Review" || assignment.status === "Resubmitted")
               .map((assignment) => (
                 <Card
                   key={assignment.id}
@@ -82,9 +87,7 @@ const CodeReviewerDashboard = () => {
                   <Card.Body className="d-flex flex-column justify-content-around">
                     <Card.Title>Assignment #{assignment.number}</Card.Title>
                     <div className="d-flex alignitems-start">
-                      <Badge pill bg="info" style={{ fontSize: "1em" }}>
-                        {assignment.status}
-                      </Badge>
+                    <StatusBadge text={assignment.status}/>
                     </div>
 
                     <Card.Text style={{ marginTop: "1em" }}>
@@ -96,31 +99,35 @@ const CodeReviewerDashboard = () => {
                     <Button
                       variant="secondary"
                       onClick={() => {
-                        claimAssignment(assignment);
+                        editReview(assignment);
                       }}
                     >
-                      Claim
+                      Edit
                     </Button>
                   </Card.Body>
                 </Card>
               ))}
           </div>
         ) : (
-          <></>
+          <div>No assignments found</div>
         )}
       </div>
 
       <div className="assignment-wrapper  submitted">
         <div className="h3 px-2 assignment-wrapper-title">Awaiting Review</div>
         {assignments &&
-        assignments.filter((assignment) => assignment.status === "Submitted")
+        assignments.filter((assignment) => assignment.status === "Submitted" || assignment.status === "Resubmitted")
           .length > 0 ? (
           <div
             className="d-grid gap-5"
             style={{ gridTemplateColumns: "repeat(auto-fill,18rem)" }}
           >
             {assignments
-              .filter((assignment) => assignment.status === "Submitted")
+              .filter((assignment) => assignment.status === "Submitted" || assignment.status === "Resubmitted")
+              .sort((a,b)=> {
+                if(a.status === "Resubmitted") return -1;
+                else return 1;
+              })
               .map((assignment) => (
                 <Card
                   key={assignment.id}
@@ -129,9 +136,7 @@ const CodeReviewerDashboard = () => {
                   <Card.Body className="d-flex flex-column justify-content-around">
                     <Card.Title>Assignment #{assignment.number}</Card.Title>
                     <div className="d-flex alignitems-start">
-                      <Badge pill bg="info" style={{ fontSize: "1em" }}>
-                        {assignment.status}
-                      </Badge>
+                    <StatusBadge text={assignment.status}/>
                     </div>
 
                     <Card.Text style={{ marginTop: "1em" }}>
@@ -176,9 +181,7 @@ const CodeReviewerDashboard = () => {
                   <Card.Body className="d-flex flex-column justify-content-around">
                     <Card.Title>Assignment #{assignment.number}</Card.Title>
                     <div className="d-flex alignitems-start">
-                      <Badge pill bg="info" style={{ fontSize: "1em" }}>
-                        {assignment.status}
-                      </Badge>
+                    <StatusBadge text={assignment.status}/>
                     </div>
 
                     <Card.Text style={{ marginTop: "1em" }}>
@@ -190,10 +193,10 @@ const CodeReviewerDashboard = () => {
                     <Button
                       variant="secondary"
                       onClick={() => {
-                        claimAssignment(assignment);
+                        window.location.href=`/assignments/${assignment.id}`;
                       }}
                     >
-                      Claim
+                      View
                     </Button>
                   </Card.Body>
                 </Card>

@@ -10,6 +10,7 @@ import PrivateRoute from "./PrivateRoute";
 import AssignmentView from "./AssignmentView";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CodeReviewerDashboard from "./CodeReviewerDashboard";
+import CodeReviewAssignmentView from "./CodeReviewAssignmentView/CodeReviewAssignmentView";
 
 function App() {
   // This will log "Hello" to the console when the component renders
@@ -43,10 +44,13 @@ function App() {
       <Route
         path="/assignments/:id"
         element={
+          roles.find((role)=> role === "ROLE_CODE_REVIEWER") ? <PrivateRoute>
+          <CodeReviewAssignmentView />
+        </PrivateRoute> :
           <PrivateRoute>
             <AssignmentView />
           </PrivateRoute>
-        }
+        } 
       ></Route>
       <Route path="login" element={<Login />} />
       <Route path="/" element={<Homepage />} />

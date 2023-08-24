@@ -13,8 +13,11 @@ import {
   Form,
   Row,
 } from "react-bootstrap";
+import StatusBadge from "../StatusBadge";
+import { useNavigate } from "react-router-dom";
 
 const AssignmentView = () => {
+  let navigate = useNavigate();
   const { id } = useParams();
   const [assignment, setAssignment] = useState({
     branch: "",
@@ -35,9 +38,9 @@ const AssignmentView = () => {
     //  console.log(assignment)
   }
 
-  function save() {
-    if (assignment.status === assignmentStatuses[0].status) {
-      updateAssignment("status", assignmentStatuses[1].status);
+  function save(status) {
+    if (status && assignment.status !== status) {
+      updateAssignment("status", status);
     } else {
       persist();
     }
@@ -90,9 +93,7 @@ const AssignmentView = () => {
           {assignment.number ? <h1>Assignment {assignment.number}</h1> : <></>}
         </Col>
         <Col>
-          <Badge pill bg="info" style={{ fontSize: "1em" }}>
-            {assignment.status}
-          </Badge>
+          <StatusBadge text={assignment.status} />
         </Col>
       </Row>
 
@@ -154,13 +155,55 @@ const AssignmentView = () => {
               />
             </Col>
           </Form.Group>
-          <div className="d-flex gap-5">
-          <Button onClick={() => save()}>Submit Assignment</Button>
-          <Button 
-          variant="secondary"
-          onClick={() => window.location.href ="/dashboard"}>Back</Button>
-          </div>
-          
+
+          {assignment.status === "Completed" ? (
+            <>
+              <Form.Group
+                as={Row}
+                className="d-flex align-items-center mb-3"
+                controlId="codeReviewVideoUrl"
+              >
+                <Form.Label column sm="3" md="2">
+                  Code Review Video URL :
+                </Form.Label>
+                <Col sm="9" md="8" lg="6">
+                  <a
+                    href={assignment.codeReviewVideoUrl}
+                    style={{ fontWeight: "bold" }}
+                  >
+                    {assignment.codeReviewVideoUrl}
+                  </a>
+                </Col>
+              </Form.Group>
+
+              <div className="d-flex gap-5">
+                <Button
+                  variant="secondary"
+                  onClick={() => navigate("/dashboard")}
+                >
+                  Back
+                </Button>
+              </div>
+            </>
+          ) : assignment.status === "Pending Submission" ? (
+            <div className="d-flex gap-5">
+              <Button onClick={() => save("Submitted")}>Submit Assignment</Button>
+              <Button
+                variant="secondary"
+                onClick={() => navigate("/dashboard")}
+              >
+                Back
+              </Button>
+            </div>
+          ) : <div className="d-flex gap-5">
+              <Button onClick={() => save("Resubmitted")}>Resubmit Assignment</Button>
+              <Button
+                variant="secondary"
+                onClick={() => navigate("/dashboard")}
+              >
+                Back
+              </Button>
+            </div> }
         </>
       ) : (
         <></>
