@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { useLocalState } from "../util/useLocalStorage";
 import { useNavigate } from "react-router-dom";
 import ajax from "../Services/fetchService";
-import { Badge, Button, Card, Col, Container, Row } from "react-bootstrap";
+import {  Button, Card, Col, Container, Row } from "react-bootstrap";
 import jwt_decode from "jwt-decode";
 import StatusBadge from "../StatusBadge";
+import {  useUser } from "../UserProvider";
 
 const CodeReviewerDashboard = () => {
   const navigate = useNavigate();
-  const [jwt, setJwt] = useLocalState("", "jwt");
+  const user = useUser();
   const [assignments, setAssignments] = useState(null);
+
+  useEffect(()=>{
+    if(!user.jwt)navigate("/login");
+  })
 
   function editReview(assignment){
     window.location.href=`/assignments/${assignment.id}`
   }
 
   function claimAssignment(assignment) {
-    const decodedJWT = jwt_decode(jwt);
+    const decodedJWT = jwt_decode(user.jwt);
     const user = {
       username: decodedJWT.sub,
     };
@@ -25,7 +29,7 @@ const CodeReviewerDashboard = () => {
     //  todo : dont hardcode this status
     assignment.status = "In Review";
 
-    ajax(`/api/assignments/${assignment.id}`, "PUT", jwt, assignment).then(
+    ajax(`/api/assignments/${assignment.id}`, "PUT", user.jwt, assignment).then(
       (updatedAssignment) => {
         const assignmentsCopy = [...assignments];
         const i = assignmentsCopy.findIndex((a) => a.id === assignment.id);
@@ -36,13 +40,13 @@ const CodeReviewerDashboard = () => {
   }
 
   useEffect(() => {
-    ajax("api/assignments", "GET", jwt).then((assignmentsData) => {
+    ajax("api/assignments", "GET", user.jwt).then((assignmentsData) => {
       setAssignments(assignmentsData);
     });
-  }, [jwt]);
+  }, [user.jwt]);
 
   function createAssignment() {
-    ajax("api/assignments", "POST", jwt).then((assignment) => {
+    ajax("api/assignments", "POST", user.jwt).then((assignment) => {
      // navigate(`/assignments/${assignment.id}`);
        window.location.href = `/assignments/${assignment.id}`;
     });
@@ -55,7 +59,7 @@ const CodeReviewerDashboard = () => {
             className="d-flex justify-content-end"
             style={{ cursor: "pointer" }}
             onClick={() => {
-              setJwt(null);
+              user.setJwt(null);
               navigate("/login");
             }}
           >

@@ -1,17 +1,18 @@
-import React, { useState } from "react";
-import { useLocalState } from "../util/useLocalStorage";
-import ajax from "../Services/fetchService";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { Form } from "react-bootstrap";
-import {  useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../UserProvider";
 
 const Login = () => {
+  const user = useUser();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const [jwt, setJwt] = useLocalState("", "jwt");
+  useEffect(() => {
+    if (user.jwt) navigate("/dashboard");
+  }, [user]);
 
   function sendLoginRequest() {
     const reqBody = {
@@ -33,8 +34,7 @@ const Login = () => {
       })
 
       .then(([body, headers]) => {
-        setJwt(headers.get("authorization"));
-        window.location.href = `/dashboard`;// Getting the "authorization" header value
+        user.setJwt(headers.get("authorization"));
       })
       .catch((message) => {
         alert(message);
@@ -45,7 +45,7 @@ const Login = () => {
   return (
     <>
       <Container>
-      <Row className="justify-content-center mt-5">
+        <Row className="justify-content-center mt-5">
           <Col md="8" lg="6">
             <Form.Group className="mb-3" controlId="username">
               <Form.Label className="fs-4">Username</Form.Label>
@@ -59,7 +59,7 @@ const Login = () => {
             </Form.Group>
           </Col>
         </Row>
-       
+
         <Row className="justify-content-center">
           <Col md="8" lg="6">
             <Form.Group className="mb-3" controlId="password">

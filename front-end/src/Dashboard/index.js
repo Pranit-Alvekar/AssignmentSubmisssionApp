@@ -1,25 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { useLocalState } from "../util/useLocalStorage";
+
 import { useNavigate } from "react-router-dom";
 import ajax from "../Services/fetchService";
-import { Badge, Button, Card, Col, Row } from "react-bootstrap";
+import { Button, Card, Col, Row } from "react-bootstrap";
 import StatusBadge from "../StatusBadge";
+import { useUser } from "../UserProvider";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [jwt, setJwt] = useLocalState("", "jwt");
+  const user = useUser();
   const [assignments, setAssignments] = useState(null);
 
   useEffect(() => {
-    ajax("api/assignments", "GET", jwt).then((assignmentsData) => {
+    ajax("api/assignments", "GET", user.jwt).then((assignmentsData) => {
       setAssignments(assignmentsData);
     });
-  }, [jwt]);
+    if (!user.jwt) navigate("/login");
+  }, [user.jwt]);
 
   function createAssignment() {
-    ajax("api/assignments", "POST", jwt).then((assignment) => {
-      //navigate(`/assignments/${assignment.id}`);
-       window.location.href = `/assignments/${assignment.id}`;
+    ajax("api/assignments", "POST", user.jwt).then((assignment) => {
+      navigate(`/assignments/${assignment.id}`);
+      // window.location.href = `/assignments/${assignment.id}`;
     });
   }
   return (
@@ -30,7 +32,7 @@ const Dashboard = () => {
             className="d-flex justify-content-end"
             style={{ cursor: "pointer" }}
             onClick={() => {
-              setJwt(null);
+              user.setJwt(null);
               navigate("/login");
             }}
           >
@@ -56,7 +58,7 @@ const Dashboard = () => {
               <Card.Body className="d-flex flex-column justify-content-around">
                 <Card.Title>Assignment #{assignment.number}</Card.Title>
                 <div className="d-flex alignitems-start">
-                  <StatusBadge text={assignment.status}/>
+                  <StatusBadge text={assignment.status} />
                 </div>
 
                 <Card.Text style={{ marginTop: "1em" }}>
@@ -68,7 +70,7 @@ const Dashboard = () => {
                 <Button
                   variant="secondary"
                   onClick={() => {
-                    window.location.href=`/assignments/${assignment.id}`;
+                    window.location.href = `/assignments/${assignment.id}`;
                   }}
                 >
                   Edit
