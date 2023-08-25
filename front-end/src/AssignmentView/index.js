@@ -15,21 +15,88 @@ import {
 } from "react-bootstrap";
 import StatusBadge from "../StatusBadge";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../UserProvider";
+import Comment from "../Comment";
 
 const AssignmentView = () => {
+  const user = useUser();
   let navigate = useNavigate();
-  const { id } = useParams();
+  const { assignmentId } = useParams();
   const [assignment, setAssignment] = useState({
     branch: "",
     githuburl: "",
     number: null,
     status: null,
   });
-  const [jwt, setJwt] = useLocalState("", "jwt");
+  
+  const emptyComment ={
+    id: null,
+    text: "",
+    assignmentId: assignmentId != null ? parseInt(assignmentId) : null,
+    user: user.jwt,
+  }
   const [assignmentEnums, setAssignmentEnums] = useState([]);
   const [assignmentStatuses, setAssignmentStatuses] = useState([]);
+  const [comment, setComment] = useState(emptyComment);
+  const [comments, setComments] = useState([]);
 
   const prevAssignmentValue = useRef(assignment);
+
+  function handleEditComment(commentId){
+    const i = comments.findIndex(comment=>comment.id === commentId);
+    const commentCopy = {
+      id: comments[i].id,
+      text: comments[i].text,
+      assignmentId: assignmentId != null ? parseInt(assignmentId) : null,
+      user: user.jwt,
+    }
+    setComment(commentCopy)
+
+  }
+
+  function handleDeleteComment(commentId) {
+    //TODO: send delete req to server
+    console.log(`i want to delete ${commentId}`);
+  }
+
+  function submitComment() {
+    if(comment.id){
+      
+      ajax(`/api/comments/${comment.id}`, "PUT", user.jwt, comment).then(d=>{
+        const commentsCopy = [...comments];
+        const i = comments.findIndex(comment=>comment.id === d.id);
+        commentsCopy[i] = d;
+        setComments(commentsCopy);
+        setComment(emptyComment)
+      })
+
+    }else{
+      
+      ajax(`/api/comments`, "POST", user.jwt, comment).then((d) => {
+        const commentsCopy = [...comments];
+        commentsCopy.push(d);
+        setComments(commentsCopy);
+        setComment("")
+      });
+    }
+  }
+
+  useEffect(() => {
+    ajax(
+      `/api/comments?assignmentId=${assignmentId}`,
+      "get",
+      user.jwt,
+      null
+    ).then((commentsData) => {
+      setComments(commentsData);
+    });
+  }, []);
+
+  function updateComment(value) {
+    const commentCopy = { ...comment };
+    commentCopy.text = value;
+    setComment(commentCopy);
+  }
 
   function updateAssignment(prop, value) {
     const newAssignment = { ...assignment };
@@ -47,7 +114,7 @@ const AssignmentView = () => {
   }
 
   function persist() {
-    ajax(`/api/assignments/${id}`, "PUT", jwt, assignment).then(
+    ajax(`/api/assignments/${assignmentId}`, "PUT", user.jwt, assignment).then(
       (assignmentData) => {
         setAssignment(assignmentData);
       }
@@ -74,14 +141,16 @@ const AssignmentView = () => {
   // }
 
   useEffect(() => {
-    ajax(`/api/assignments/${id}`, "GET", jwt).then((assignmentsResponse) => {
-      let assignmentData = assignmentsResponse.assignment;
-      if (assignmentData.branch === null) assignmentData.branch = "";
-      if (assignmentData.githuburl === null) assignmentData.githuburl = "";
-      setAssignment(assignmentData);
-      setAssignmentEnums(assignmentsResponse.assignmentEnum);
-      setAssignmentStatuses(assignmentsResponse.statusEnums);
-    });
+    ajax(`/api/assignments/${assignmentId}`, "GET", user.jwt).then(
+      (assignmentsResponse) => {
+        let assignmentData = assignmentsResponse.assignment;
+        if (assignmentData.branch === null) assignmentData.branch = "";
+        if (assignmentData.githuburl === null) assignmentData.githuburl = "";
+        setAssignment(assignmentData);
+        setAssignmentEnums(assignmentsResponse.assignmentEnum);
+        setAssignmentStatuses(assignmentsResponse.statusEnums);
+      }
+    );
   }, []);
 
   // useEffect(() => console.log(assignmentEnums), [assignmentEnums]);
@@ -187,7 +256,9 @@ const AssignmentView = () => {
             </>
           ) : assignment.status === "Pending Submission" ? (
             <div className="d-flex gap-5">
-              <Button onClick={() => save("Submitted")}>Submit Assignment</Button>
+              <Button onClick={() => save("Submitted")}>
+                Submit Assignment
+              </Button>
               <Button
                 variant="secondary"
                 onClick={() => navigate("/dashboard")}
@@ -195,15 +266,40 @@ const AssignmentView = () => {
                 Back
               </Button>
             </div>
-          ) : <div className="d-flex gap-5">
-              <Button onClick={() => save("Resubmitted")}>Resubmit Assignment</Button>
+          ) : (
+            <div className="d-flex gap-5">
+              <Button onClick={() => save("Resubmitted")}>
+                Resubmit Assignment
+              </Button>
               <Button
                 variant="secondary"
                 onClick={() => navigate("/dashboard")}
               >
                 Back
               </Button>
-            </div> }
+            </div>
+          )}
+          <div className="mt-4">
+            <textarea
+              style={{ width: "100%", borderRadius: "0.25em" }}
+              onChange={(e) => updateComment(e.target.value)}
+              value={comment.text}
+            ></textarea>
+            <Button onClick={() => submitComment()}>Post Comment</Button>
+          </div>
+          <div className="mt-5">
+            {comments.map((comment) => (
+              <Comment
+                key={comment.id}
+                createdDate={comment.createdDate}
+                createdBy={comment.createdBy}
+                text={comment.text}
+                emitDeleteComment={handleDeleteComment}
+                emitEditComment={handleEditComment}
+                id={comment.id}
+              />
+            ))}
+          </div>
         </>
       ) : (
         <></>

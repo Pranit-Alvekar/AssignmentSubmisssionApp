@@ -19,78 +19,96 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User implements UserDetails {
-	
+
 	private static final long serialVersionUID = 5597262777671115527L;
-	@Id 
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private LocalDate cohortStartDate;
 	private String username;
 	@JsonIgnore
 	private String password;
-	@OneToMany(fetch = FetchType.EAGER,mappedBy = "user")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	@JsonIgnore
 	private List<Authority> authorities = new ArrayList<>();
-	
+	private String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public LocalDate getCohortStartDate() {
 		return cohortStartDate;
 	}
+
 	public void setCohortStartDate(LocalDate cohortStartDate) {
 		this.cohortStartDate = cohortStartDate;
 	}
+
 	@Override
 	public String getUsername() {
 		return username;
 	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
 	@Override
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		
+
 		return authorities;
 	}
-	
+
 	public void setAuthorities(List<Authority> authorities) {
 		this.authorities = authorities;
 	}
+
 	@Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
 		return true;
 	}
+
 	@Override
 	public boolean isAccountNonLocked() {
 		// TODO Auto-generated method stub
 		return true;
 	}
+
 	@Override
 	public boolean isCredentialsNonExpired() {
 		// TODO Auto-generated method stub
 		return true;
 	}
+
 	@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
 	}
-	
-	
-		
 
 }
