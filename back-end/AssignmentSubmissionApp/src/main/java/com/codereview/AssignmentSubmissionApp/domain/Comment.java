@@ -1,7 +1,7 @@
 package com.codereview.AssignmentSubmissionApp.domain;
 
 import java.time.LocalDateTime;
-
+import java.time.ZonedDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,7 +25,7 @@ public class Comment {
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User createdBy;
-	private LocalDateTime createdDate;
+	private ZonedDateTime createdDate;
 	@Column(columnDefinition = "TEXT")
 	private String text;
 	
@@ -35,10 +35,10 @@ public class Comment {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public LocalDateTime getCreatedDate() {
+	public ZonedDateTime getCreatedDate() {
 		return createdDate;
 	}
-	public void setCreatedDate(LocalDateTime createdDate) {
+	public void setCreatedDate(ZonedDateTime createdDate) {
 		this.createdDate = createdDate;
 	}
 	public User getCreatedBy() {

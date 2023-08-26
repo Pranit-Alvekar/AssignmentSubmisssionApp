@@ -1,6 +1,7 @@
 package com.codereview.AssignmentSubmissionApp.service;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -31,8 +32,10 @@ public class CommentService {
 		comment.setText(commentDto.getText());
 		comment.setCreatedBy(user);
 		comment.setAssignment(assignment);
-		if(comment.getId() == null)
-		comment.setCreatedDate(LocalDateTime.now());
+		if (comment.getId() == null)
+            comment.setCreatedDate(ZonedDateTime.now());
+        else
+            comment.setCreatedDate(commentDto.getCreatedDate());
 		
 		return commentRepo.save(comment);
 
@@ -41,6 +44,11 @@ public class CommentService {
 	public Set<Comment> getCommentsByAssignmentId(Long assignmentId) {
 		Set<Comment> comments = commentRepo.findByAssignmentId(assignmentId);
 		return comments;
+	}
+
+	public void delete(Long commentId) {
+		 commentRepo.deleteById(commentId);
+		
 	}
 
 }

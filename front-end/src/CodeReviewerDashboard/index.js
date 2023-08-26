@@ -21,11 +21,11 @@ const CodeReviewerDashboard = () => {
 
   function claimAssignment(assignment) {
     const decodedJWT = jwt_decode(user.jwt);
-    const user = {
+    const codeReviewer = {
       username: decodedJWT.sub,
     };
 
-    assignment.codeReviewer = user;
+    assignment.codeReviewer = codeReviewer;
     //  todo : dont hardcode this status
     assignment.status = "In Review";
 

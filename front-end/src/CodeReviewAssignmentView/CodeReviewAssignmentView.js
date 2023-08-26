@@ -15,15 +15,19 @@ import {
 } from "react-bootstrap";
 import StatusBadge from "../StatusBadge";
 import { useNavigate } from "react-router-dom";
+import CommentContainer from "../CommentContainer";
+import { useUser } from "../UserProvider";
 
 const CodeReviewAssignmentView = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const user = useUser();
+  const id = window.location.href.split("/assignments/")[1];
   const [assignment, setAssignment] = useState({
     branch: "",
     githuburl: "",
     number: null,
     status: null,
+    codeReviewVideoUrl: null
   });
   const [jwt, setJwt] = useLocalState("", "jwt");
   const [assignmentEnums, setAssignmentEnums] = useState([]);
@@ -47,7 +51,7 @@ const CodeReviewAssignmentView = () => {
   }
 
   function persist() {
-    ajax(`/api/assignments/${id}`, "PUT", jwt, assignment).then(
+    ajax(`/api/assignments/${id}`, "PUT", user.jwt, assignment).then(
       (assignmentData) => {
         setAssignment(assignmentData);
       }
@@ -74,7 +78,7 @@ const CodeReviewAssignmentView = () => {
   // }
 
   useEffect(() => {
-    ajax(`/api/assignments/${id}`, "GET", jwt).then((assignmentsResponse) => {
+    ajax(`/api/assignments/${id}`, "GET", user.jwt).then((assignmentsResponse) => {
       let assignmentData = assignmentsResponse.assignment;
       if (assignmentData.branch === null) assignmentData.branch = "";
       if (assignmentData.githuburl === null) assignmentData.githuburl = "";
@@ -179,6 +183,7 @@ const CodeReviewAssignmentView = () => {
               Back
             </Button>
           </div>
+          <CommentContainer assignmentId={id} />
         </>
       ) : (
         <></>

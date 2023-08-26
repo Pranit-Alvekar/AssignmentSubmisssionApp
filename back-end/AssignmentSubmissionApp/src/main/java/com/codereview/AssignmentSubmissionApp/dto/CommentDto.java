@@ -1,12 +1,13 @@
 package com.codereview.AssignmentSubmissionApp.dto;
 
-
+import java.time.ZonedDateTime;
 
 public class CommentDto {
 	private Long id;
 	private Long assignmentId;
 	private String text;
 	private String user;
+	private ZonedDateTime createdDate;
 
 	public Long getAssignmentId() {
 		return assignmentId;
@@ -43,6 +44,14 @@ public class CommentDto {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public ZonedDateTime getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(ZonedDateTime createdDate) {
+		this.createdDate = createdDate;
 	}
 	
 
