@@ -3,6 +3,8 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../UserProvider";
+import NavBar from "../NavBar";
+import { ToastContainer, toast } from 'react-toastify';
 
 const Login = () => {
   const user = useUser();
@@ -35,16 +37,20 @@ const Login = () => {
 
       .then(([body, headers]) => {
         user.setJwt(headers.get("authorization"));
+        toast.success("Login successful!");
       })
       .catch((message) => {
-        alert(message);
+        toast.error("Invalid login attempt. Please check your credentials." ,{position: toast.POSITION.TOP_CENTER ,theme: "dark"});
+        
       });
   }
   // The empty array means this effect runs only once when the component mounts
 
   return (
     <>
+    <NavBar />
       <Container>
+      <ToastContainer />
         <Row className="justify-content-center mt-5">
           <Col md="8" lg="6">
             <Form.Group className="mb-3" controlId="username">

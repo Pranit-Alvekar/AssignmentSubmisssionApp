@@ -12,6 +12,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import CodeReviewerDashboard from "./CodeReviewerDashboard";
 import CodeReviewAssignmentView from "./CodeReviewAssignmentView/CodeReviewAssignmentView";
 import {  useUser } from "./UserProvider";
+import Register from "./Register";
 
 function App() {
   // This will log "Hello" to the console when the component renders
@@ -64,6 +65,7 @@ function App() {
         ></Route>
         <Route path="login" element={<Login />} />
         <Route path="/" element={<Homepage />} />
+        <Route path="register" element={<Register />} />
       </Routes>
     
   );

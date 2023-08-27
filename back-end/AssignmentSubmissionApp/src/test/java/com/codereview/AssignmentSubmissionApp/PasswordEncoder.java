@@ -9,6 +9,7 @@ public class PasswordEncoder {
 	public void encode_password() {
 		BCryptPasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
 		System.out.println(passwordEncoder.encode("asdfasdf"));
+	
 	}
 
 }

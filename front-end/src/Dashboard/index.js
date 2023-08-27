@@ -53,7 +53,8 @@ const Dashboard = () => {
           {assignments.map((assignment) => (
             <Card
               key={assignment.id}
-              style={{ width: "18rem", height: "18rem" }}
+              style={{ width: "18rem", height: "18rem" , backgroundColor:"#b5e7a0" }}
+              
             >
               <Card.Body className="d-flex flex-column justify-content-around">
                 <Card.Title>Assignment #{assignment.number}</Card.Title>

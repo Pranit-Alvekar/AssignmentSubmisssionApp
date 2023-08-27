@@ -22,3 +22,19 @@
   padding: 1em;
   margin: 1em 0em;
 }
+.logo-container {
+  margin-top: 20px; /* Adjust the margin value as needed */
+}
+
+.logo {
+  max-height: 100px; /* Adjust the logo height as needed */
+}
+
+
+
+/* Your CSS file or component style */
+.custom-margin-left {
+  margin-left: 10px;
+   /* Adjust the value as needed */
+}
+
