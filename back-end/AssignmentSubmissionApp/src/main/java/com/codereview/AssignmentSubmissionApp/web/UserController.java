@@ -32,27 +32,9 @@ public class UserController {
 
 	 @PostMapping("/register")
 	    private ResponseEntity<?> createUser(@RequestBody UserDto userDto) {
-	        userService.createUser(userDto);
-
-	        try {
-	            Authentication authenticate = authenticationManager
-	                    .authenticate(
-	                            new UsernamePasswordAuthenticationToken(
-	                                    userDto.getUsername(), userDto.getPassword()
-	                            )
-	                    );
-
-	            User user = (User) authenticate.getPrincipal();
-	            user.setPassword(null);
-	            return ResponseEntity.ok()
-	                    .header(
-	                            HttpHeaders.AUTHORIZATION,
-	                            jwtUtil.generateToken(user)
-	                    )
-	                    .body(user);
-	        } catch (BadCredentialsException ex) {
-	            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-	        }
+		 User newUser = userService.createUser(userDto);
+	        
+	        return ResponseEntity.ok(userDto);
 	    }
 	
 }
