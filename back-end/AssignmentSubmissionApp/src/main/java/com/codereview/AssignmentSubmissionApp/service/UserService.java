@@ -27,18 +27,28 @@ public class UserService {
 			return userRepo.findByUsername(username);
 		}
 		
-		 public void createUser(UserDto userDto) {
-		        User newUser = new User();
-		        newUser.setUsername(userDto.getUsername());
-		        newUser.setName(userDto.getName());
-		        String encodedPassword = customPasswordEncoder.getPasswordEncoder().encode(userDto.getPassword());
-		        newUser.setPassword(encodedPassword);
-		        userRepo.save(newUser);
-		        Authority authority = new Authority();
-		        authority.setAuthority("ROLE_STUDENT");
-		        authority.setUser(newUser);
-		        authorityRepo.save(authority);
+		public User createUser(UserDto userDto) {
+	        User newUser = new User();
+	        newUser.setUsername(userDto.getUsername());
+	        newUser.setName(userDto.getName());
+	        String encodedPassword = customPasswordEncoder.getPasswordEncoder().encode(userDto.getPassword());
+	        newUser.setPassword(encodedPassword);
+	       User persistUser = userRepo.save(newUser);
+	        Authority authority = new Authority();
+	        
+	        if(userDto.getRole().equals("ROLE_STUDENT")) {
+	        	authority.setAuthority("ROLE_STUDENT");
+	        	}
+	        
+	        else {authority.setAuthority("ROLE_CODE_REVIEWER");}
+	        
+	       
+	        
+	        authority.setUser(newUser);
+	        authorityRepo.save(authority);
+	        
+	        return  persistUser;
 
-		    }
+	    }
 		
 }
