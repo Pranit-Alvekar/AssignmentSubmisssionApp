@@ -58,9 +58,8 @@ Successful completion is celebrated with notifications:
 
 1. Students log in to their accounts and land on the dashboard.
 2. Submit new assignments by providing GitHub URLs and branch names.
-3. Active code reviewers receive email notifications for review.
-4. Code reviewers claim assignments, initiate reviews, and provide feedback.
-5. Students receive notifications about reviews, updates, and completions.
+3. Code reviewers claim assignments, initiate reviews, and provide feedback.
+
 
 ## Daily Batch Jobs
 
