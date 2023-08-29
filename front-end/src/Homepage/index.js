@@ -1,15 +1,21 @@
 import React from "react";
-import { Container } from "react-bootstrap";
-import NavBar from "../NavBar";
+import "../App.css";
+import Home from "../Components/Home";
+
+import Work from "../Components/Work";
+import Testimonial from "../Components/Testimonial";
+import Contact from "../Components/Contact";
 
 const Homepage = () => {
   return (
-    <>
-      <NavBar />
-      <Container className="mt-5">
-        <h1>Welcome Fellow Coders</h1>
-      </Container>
-    </>
+    <div className="App">
+    <Home />
+    
+    <Work />
+    <Testimonial />
+    <Contact />
+    
+  </div>
   );
 };
 
