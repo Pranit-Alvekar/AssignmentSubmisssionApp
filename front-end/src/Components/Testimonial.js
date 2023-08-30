@@ -13,20 +13,22 @@ const Testimonial = () => {
         <p className="primary-subheading">Team</p>
         <h1 className="primary-heading">What They Are Saying</h1>
         <p className="primary-text">
-          The Code Inspector app is a comprehensive platform designed to
-          streamline the process of submitiing, reviewing and managing
-          assignments within an educational context. The app provides students
-          with a user-friendly dashboard that highlights ongoing reviews and
-          passed submissions.
+          From our 6-month PGDAC course at CDAC ACTS, we skillfully employed
+          diverse tech stacks to create the user-friendly Code Inspector app. It
+          streamlines assignment processes and owes gratitude to our faculty for
+          guidance. The app provides students an intuitive dashboard for
+          tracking reviews and successful submissions.
         </p>
       </div>
       <div className="d-flex justify-content-between testimonial-row">
         <div className="testimonial-section-bottom">
           <img src={vivek} alt="" />
           <p>
-            Working in a team was a great experience that provided me with
-            valuable exposure to various technologies. Through hands-on
-            practical work, I was able to enhance my understanding and skills.
+            Participating in a team environment was an invaluable experience,
+            affording me exposure to a wide array of technologies. My active
+            engagement in backend Spring Boot development, security
+            implementation, and JWT integration played a pivotal role in honing
+            my expertise and knowledge.
           </p>
 
           <h2>Vivek Dalvi</h2>
@@ -35,9 +37,11 @@ const Testimonial = () => {
         <div className="testimonial-section-bottom">
           <img src={ash} alt="" />
           <p>
-            Working in a team was a great experience that provided me with
-            valuable exposure to various technologies. Through hands-on
-            practical work, I was able to enhance my understanding and skills.
+            Participating in the development of an assignment submission app was
+            an enriching journey that allowed me to delve into diverse
+            programming languages and tools. Engaging in real-time coding and
+            problem-solving amplified my comprehension and proficiency in
+            software development.
           </p>
 
           <h2>Ashish Sharma</h2>
@@ -48,8 +52,10 @@ const Testimonial = () => {
         <div className="testimonial-section-bottom">
           <img src={pranit} alt="" />
           <p>
-            PPT Designer and Document developer of the group.Through hands-on
-            practical work, I was able to enhance my understanding and skills.
+            Participating in the development of the code inspector app exposed
+            me to the intricacies of code analysis and debugging tools. The
+            collaborative environment taught me how to effectively communicate
+            complex technical ideas with team members.
           </p>
 
           <h2>Pranit Alvekar</h2>
@@ -58,9 +64,10 @@ const Testimonial = () => {
         <div className="testimonial-section-bottom">
           <img src={vivek1} alt="" />
           <p>
-            Vidarbh Express. Potta.PPT Designer and Document developer of the
-            group.Through hands-on practical work, I was able to enhance my
-            understanding and skills.
+            Collaborative teamwork illuminated the significance of adaptability
+            based on user requirements. Immersive participation enabled me to
+            refine my problem-solving skills and comprehend the integration of
+            backend and frontend technologies.
           </p>
 
           <h2>Vivek Gomase</h2>
@@ -70,10 +77,10 @@ const Testimonial = () => {
         <div className="testimonial-section-bottom">
           <img src={yogi} alt="" />
           <p>
-            Aspiring UI/UX CSS developer from Kolhapur. Very Less important part
-            of this project PPT Designer and Document developer of the
-            group.Through hands-on practical work, I was able to enhance my
-            understanding and skills.
+            Contributing to the code inspector app enabled me to grasp the
+            significance of automated code reviews and performance analysis.
+            Working closely with teammates improved my ability to comprehend and
+            implement advanced algorithms.
           </p>
 
           <h2>Yogesh Gejege</h2>
@@ -82,8 +89,10 @@ const Testimonial = () => {
         <div className="testimonial-section-bottom">
           <img src={manish} alt="" />
           <p>
-            Lorem ipsum dolor sit amet consectetur. Non tincidunt magna non et
-            elit. Dolor turpis molestie dui magnis facilisis at fringilla quam.
+            Practical experience proved instrumental in advancing my
+            understanding of software architecture and enhancing my proficiency
+            in interpreting complex codebases. Through practical involvement, I
+            honed my coding abilities and learned about database management.
           </p>
 
           <h2>Manish Pandey</h2>

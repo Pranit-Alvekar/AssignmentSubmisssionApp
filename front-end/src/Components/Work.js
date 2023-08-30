@@ -8,17 +8,17 @@ const Work = () => {
     {
       image: PickMeals,
       title: "Code",
-      text: "Lorem ipsum dolor sit amet consectetur. Maecenas orci et sagittis duis elementum interdum facilisi bibendum.",
+      text: "feature allows students to submit assignments effortlessly by providing a GitHub link and branch.",
     },
     {
       image: ChooseMeals,
       title: "Submit",
-      text: "Lorem ipsum dolor sit amet consectetur. Maecenas orci et ",
+      text: "empowers students to efficiently submit assignments while enabling iterative feedback from reviewers.",
     },
     {
       image: DeliveryMeals,
       title: "Get Reviewed",
-      text: "Lorem ipsum dolor sit amet consectetur. Maecenas orci et lorem ipsum",
+      text: "feature facilitates collaboration, transparency and enriching the educational experience.",
     },
   ];
   return (
@@ -27,8 +27,10 @@ const Work = () => {
         <p className="primary-subheading">Work</p>
         <h1 className="primary-heading">How It Works</h1>
         <p className="primary-text">
-          Lorem ipsum dolor sit amet consectetur. Non tincidunt magna non et
-          elit. Dolor turpis molestie dui magnis facilisis at fringilla quam.
+          Across a span of 14 assignments, students kickstart the process by
+          submitting their work, subsequently allowing reviewers to access,
+          evaluate, and contribute valuable feedback and collaborative comments
+          to facilitate iterative enhancements.
         </p>
       </div>
       <div className="work-section-bottom">

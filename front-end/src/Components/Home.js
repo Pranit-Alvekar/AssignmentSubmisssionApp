@@ -19,8 +19,10 @@ const Home = () => {
             A streamlined assignment submission app
           </h1>
           <p className="primary-text">
-            Healthy switcher chefs do all the prep work, like peeding, chopping
-            & marinating, so you can cook a fresh food.
+            
+This App stands as a testament to innovation, education, 
+and technological prowess. It caters to the evolving needs of educational institutions, 
+promoting collaborative learning, skill enhancement, and continuous improvement.
           </p>
           <button 
           onClick={() => {
