@@ -1,17 +1,20 @@
-import React, { useState } from "react";
-import { useLocalState } from "../util/useLocalStorage";
-import ajax from "../Services/fetchService";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { Form } from "react-bootstrap";
-import { Navigate, useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../UserProvider";
+import NavBar from "../NavBar";
+import { ToastContainer, toast } from 'react-toastify';
 
 const Login = () => {
+  const user = useUser();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const [jwt, setJwt] = useLocalState("", "jwt");
+  useEffect(() => {
+    if (user.jwt) navigate("/dashboard");
+  }, [user]);
 
   function sendLoginRequest() {
     const reqBody = {
@@ -33,19 +36,22 @@ const Login = () => {
       })
 
       .then(([body, headers]) => {
-        setJwt(headers.get("authorization"));
-        window.location.href = "dashboard"; // Getting the "authorization" header value
+        user.setJwt(headers.get("authorization"));
+        toast.success("Login successful!");
       })
       .catch((message) => {
-        alert(message);
+        toast.error("Invalid login attempt. Please check your credentials." ,{position: toast.POSITION.TOP_CENTER ,theme: "dark"});
+        
       });
   }
   // The empty array means this effect runs only once when the component mounts
 
   return (
     <>
+    <NavBar />
       <Container>
-      <Row className="justify-content-center mt-5">
+      <ToastContainer />
+        <Row className="justify-content-center mt-5">
           <Col md="8" lg="6">
             <Form.Group className="mb-3" controlId="username">
               <Form.Label className="fs-4">Username</Form.Label>
@@ -59,7 +65,7 @@ const Login = () => {
             </Form.Group>
           </Col>
         </Row>
-       
+
         <Row className="justify-content-center">
           <Col md="8" lg="6">
             <Form.Group className="mb-3" controlId="password">

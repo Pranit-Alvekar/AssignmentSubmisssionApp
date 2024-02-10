@@ -1,0 +1,40 @@
+version: '3'
+services:
+  # Backend service
+  backend:
+    build:
+      context: back-end
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081" # Map the backend port to the host
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/assignment_submission_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    networks:
+      - your_network
+    command: ["dockerize", "-wait", "tcp://mysql:3306", "-timeout", "60s", "java", "-cp", "/app:/app/lib/*", "com.codereview.AssignmentSubmissionApplication"]
+
+  # Frontend service
+  frontend:
+    build:
+      context: front-end
+      dockerfile: Dockerfile
+    ports:
+      - "80:80" # Map the frontend port to the host
+    depends_on:
+      - backend
+    networks:
+      - your_network
+
+  # MySQL service
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: assignment_submission_db
+    networks:
+      - your_network
+
+networks:
+  your_network:
